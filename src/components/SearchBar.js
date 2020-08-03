@@ -1,6 +1,12 @@
 import React from "react";
-
-export default function searchBar({ handleChange, value, fetchImages }) {
+import ImageGallery from "./ImageGallery";
+export default function searchBar({
+  handleChange,
+  value,
+  fetchImages,
+  results,
+  openModal,
+}) {
   return (
     <React.Fragment>
       <div className="container">
@@ -28,6 +34,14 @@ export default function searchBar({ handleChange, value, fetchImages }) {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="container-fluid img-container">
+        <div className="row">
+          {results.map((image) => (
+            <ImageGallery key={image.id} image={image} openModal={openModal} />
+          ))}
         </div>
       </div>
     </React.Fragment>

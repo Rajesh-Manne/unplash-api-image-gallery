@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Modal({ open, closeModal, modal }) {
+export default function Modal({ open, closeModal, modal, results, openModal }) {
   //   const { id, links } = image;
   console.log(modal);
   const { urls, links, user, profile_image } = modal;

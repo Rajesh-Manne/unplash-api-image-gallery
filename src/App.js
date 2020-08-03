@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import logo from './logo.svg';
 import "./App.css";
-import ImageGallery from "./components/ImageGallery";
+
 import SearchBar from "./components/SearchBar";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -48,13 +48,19 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <SearchBar
-          handleChange={handleChange}
-          value={value}
-          fetchImages={fetchImages}
-        />
+        <Switch>
+          <Route exact path="/">
+            <SearchBar
+              handleChange={handleChange}
+              value={value}
+              fetchImages={fetchImages}
+              results={results}
+              openModal={openModal}
+            />
+          </Route>
+        </Switch>
 
-        <div className="container-fluid img-container">
+        {/* <div className="container-fluid img-container">
           <div className="row">
             {results.map((image) => (
               <ImageGallery
@@ -64,7 +70,8 @@ function App() {
               />
             ))}
           </div>
-        </div>
+        </div> */}
+
         {results.map((image) => (
           <Modal open={open} closeModal={closeModal} modal={modal} />
         ))}
