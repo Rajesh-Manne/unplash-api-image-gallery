@@ -1,24 +1,73 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+// import logo from './logo.svg';
+import "./App.css";
+import ImageGallery from "./components/ImageGallery";
+import SearchBar from "./components/SearchBar";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import Modal from "./components/Modal";
+//qO9EkoChdXkbwxA-zwrN5-wvMVq5ULgp3tXLVS4YKTg
 
 function App() {
+  const [value, setValue] = useState("");
+  const [results, setResults] = useState([]);
+  const [open, setOpen] = useState("true");
+  const [modal, setModal] = useState("");
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+  const fetchImages = () => {
+    try {
+      fetch(
+        `https://api.unsplash.com/search/photos/?client_id=qO9EkoChdXkbwxA-zwrN5-wvMVq5ULgp3tXLVS4YKTg&query=${value}`
+      )
+        .then((res) => res.json())
+        .then((data) => setResults(data.results));
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const getItem = (id) => {
+    const product = results.find((item) => id === item.id);
+    return product;
+  };
+  const openModal = (id) => {
+    const product = getItem(id);
+    setModal(product);
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SearchBar
+        handleChange={handleChange}
+        value={value}
+        fetchImages={fetchImages}
+      />
+
+      <div className="container img-container">
+        <div className="row">
+          {results.map((image) => (
+            <ImageGallery key={image.id} image={image} openModal={openModal} />
+          ))}
+        </div>
+      </div>
+      {results.map((image) => (
+        <Modal
+          key={image.id}
+          image={image}
+          open={open}
+          closeModal={closeModal}
+          modal={modal}
+        />
+      ))}
+      {/* <Modal results={results} openModal={openModal} closeModal={closeModal} /> */}
     </div>
   );
 }
