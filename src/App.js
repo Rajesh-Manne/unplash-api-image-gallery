@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./App.css";
 import ImageGallery from "./components/ImageGallery";
 import SearchBar from "./components/SearchBar";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Modal from "./components/Modal";
@@ -11,7 +12,7 @@ import Modal from "./components/Modal";
 function App() {
   const [value, setValue] = useState("");
   const [results, setResults] = useState([]);
-  const [open, setOpen] = useState("true");
+  const [open, setOpen] = useState(false);
   const [modal, setModal] = useState("");
 
   const handleChange = (e) => {
@@ -35,6 +36,7 @@ function App() {
   };
   const openModal = (id) => {
     const product = getItem(id);
+    console.log(product);
     setModal(product);
     setOpen(true);
   };
@@ -45,29 +47,29 @@ function App() {
 
   return (
     <div className="App">
-      <SearchBar
-        handleChange={handleChange}
-        value={value}
-        fetchImages={fetchImages}
-      />
-
-      <div className="container img-container">
-        <div className="row">
-          {results.map((image) => (
-            <ImageGallery key={image.id} image={image} openModal={openModal} />
-          ))}
-        </div>
-      </div>
-      {results.map((image) => (
-        <Modal
-          key={image.id}
-          image={image}
-          open={open}
-          closeModal={closeModal}
-          modal={modal}
+      <Router>
+        <SearchBar
+          handleChange={handleChange}
+          value={value}
+          fetchImages={fetchImages}
         />
-      ))}
-      {/* <Modal results={results} openModal={openModal} closeModal={closeModal} /> */}
+
+        <div className="container-fluid img-container">
+          <div className="row">
+            {results.map((image) => (
+              <ImageGallery
+                key={image.id}
+                image={image}
+                openModal={openModal}
+              />
+            ))}
+          </div>
+        </div>
+        {results.map((image) => (
+          <Modal open={open} closeModal={closeModal} modal={modal} />
+        ))}
+        {/* <Modal results={results} openModal={openModal} closeModal={closeModal} /> */}
+      </Router>
     </div>
   );
 }

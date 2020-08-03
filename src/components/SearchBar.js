@@ -6,13 +6,15 @@ export default function searchBar({ handleChange, value, fetchImages }) {
       <div className="container">
         <div className="row">
           <div className="col-10 mx-auto col-md-8 text-center">
-            <div className="search-bar">
+            <div className="search-bar" autoComplete="on">
               <input
                 type="text"
                 className="input"
                 onChange={handleChange}
                 value={value}
                 placeholder="search for images here"
+                required="required"
+                autoComplete="on"
               />
 
               <div className="search-btn">
